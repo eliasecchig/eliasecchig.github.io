@@ -1,0 +1,31 @@
+---
+const path = Astro.url.pathname;
+const links = [
+	{ href: '/', label: 'home' },
+	{ href: '/blog/', label: 'blog' },
+	{ href: '/about/', label: 'about' },
+];
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<a class="sr-only skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+	<div class="wrap">
+		<a class="brand" href="/">elia secchi</a>
+		<nav class="nav-main" aria-label="Main">
+			{
+				links.map((l) => (
+					<a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>
+						<span class="slug" aria-hidden="true">/</span>
+						{l.label}
+					</a>
+				))
+			}
+		</nav>
+		<div class="header-tools">
+			<button class="icon-btn" data-theme-toggle aria-label="Dark mode" aria-pressed="false">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
+			</button>
+		</div>
+	</div>
+</header>

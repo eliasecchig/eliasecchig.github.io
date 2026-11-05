@@ -1,0 +1,204 @@
+/* Copyright 2026 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+/* Tokens, base and code rules are copied from the agents-cli docs site (Apache 2.0). Blog chrome is below. */
+:root {
+  /* Material 3 / Google Cloud palette. Green means a production check passed; keep it for that. */
+  --page: #ffffff;
+  --ink: #1f1f1f;
+  --ink-2: #444746;
+  --ink-3: #5e5e5e;
+  --rule: #dfe3e7;
+  --surface: #f0f4f9;
+  --surface-2: #f8fafd;
+  --island: #1e1f20;
+  --island-2: #282a2c;
+  --island-ink: #e3e3e3;
+  --blue: #0b57d0;
+  --green: #146c2e;
+  --yellow: #f9ab00;
+  --red: #b3261e;
+  --blue-ink: #0b57d0;
+  --accent: #0b57d0;
+  --accent-on-dark: #a8c7fa;
+  --pass: #146c2e;
+  --pass-surface: #e6f4ea;
+  --code-foreground: #1f1f1f;
+  --code-background: #f0f4f9;
+  /* two tones like the homepage code window; these resolve per theme because data-theme sits on <html> */
+  --code-token-keyword: var(--accent);
+  --code-token-string: var(--ink-2);
+  --code-token-string-expression: var(--ink-2);
+  --code-token-comment: var(--ink-3);
+  --code-token-constant: var(--ink);
+  --code-token-function: var(--ink);
+  --code-token-parameter: var(--ink);
+  --code-token-punctuation: var(--ink);
+  --code-token-link: var(--accent);
+  --sans: 'Google Sans Flex', 'Google Sans', system-ui, sans-serif;
+  --code: 'Google Sans Code', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --header-h: 60px;
+  --wrap: 1480px;
+  --gutter: clamp(20px, 4vw, 56px);
+  color-scheme: light;
+}
+[data-theme='dark'] {
+  --page: #131314;
+  --ink: #e3e3e3;
+  --ink-2: #c4c7c5;
+  --ink-3: #a8abad;
+  --rule: #3c4043;
+  --surface: #1e1f20;
+  --surface-2: #18191a;
+  /* the dark band must stand apart from the #131314 page */
+  --island: #282a2c;
+  --island-2: #333537;
+  --blue: #a8c7fa;
+  --green: #6dd58c;
+  --yellow: #fdd663;
+  --red: #f2b8b5;
+  --blue-ink: #a8c7fa;
+  --accent: #a8c7fa;
+  --pass: #6dd58c;
+  --pass-surface: #0f2e1a;
+  --code-foreground: #e3e3e3;
+  --code-background: #1e1f20;
+  color-scheme: dark;
+}
+:root { --measure: 680px; --wrap: 840px; }
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--header-h) + 24px); }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+img { max-width: 100%; height: auto; }
+code, pre, kbd { font-family: var(--code); }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip-link:focus { position: fixed; z-index: 1000; top: 8px; left: 8px; width: auto; height: auto; margin: 0; padding: 8px 14px; overflow: visible; clip: auto; background: var(--page); color: var(--ink); border: 1px solid var(--rule); border-radius: 8px; font-size: 14px; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ---------- header: white, one hairline ---------- */
+.site-header { position: sticky; top: 0; z-index: 50; height: var(--header-h); background: var(--page); border-bottom: 1px solid var(--rule); }
+.site-header .wrap { height: 100%; display: flex; align-items: center; gap: 32px; }
+/* the wordmark is set in the code face */
+.brand { flex: none; display: flex; align-items: center; text-decoration: none; font: 500 17px/1 var(--code); letter-spacing: -0.02em; color: var(--ink); white-space: nowrap; }
+.nav-main { display: flex; gap: 22px; align-items: stretch; align-self: stretch; }
+.nav-main a { display: flex; align-items: center; position: relative; text-decoration: none; font: 450 15px/1 var(--code); letter-spacing: -0.01em; color: var(--ink-2); }
+.nav-main .slug { color: var(--ink-3); margin-right: 1px; }
+.nav-main a:hover { color: var(--ink); }
+.nav-main a[aria-current] { color: var(--ink); font-weight: 550; }
+.nav-main a[aria-current] .slug { color: var(--accent); }
+.nav-main a[aria-current]::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--ink); }
+.header-tools { margin-left: auto; display: flex; align-items: center; }
+.icon-btn { height: 36px; min-width: 36px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--ink-2); font: inherit; font-size: 14px; cursor: pointer; text-decoration: none; padding: 0 9px; }
+.icon-btn:hover { color: var(--ink); background: var(--surface); }
+@media (max-width: 480px) { .site-header .wrap { gap: 18px; } .nav-main { gap: 14px; } }
+
+/* ---------- footer: one hairline ---------- */
+.site-footer { border-top: 1px solid var(--rule); margin-top: 96px; padding: 28px 0 56px; font-size: 14px; line-height: 1.5; color: var(--ink-3); }
+.site-footer a { color: var(--ink-2); text-underline-offset: 3px; }
+
+/* ---------- page and post ---------- */
+.page { padding-top: 56px; }
+.prose .date { margin: 0 0 14px; font-size: 14px; color: var(--ink-3); }
+.prose .date .updated-on { margin-left: 12px; }
+/* the description paragraph under the title takes the lead style via .prose h1 + p */
+.post-list { list-style: none; padding: 0; margin: 0 0 24px; }
+.post-list li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 24px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.post-list li + li { margin-top: 0; }
+.post-list a { font-weight: 500; text-decoration: none; }
+.post-list a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.post-list time { color: var(--ink-3); font-size: 14px; white-space: nowrap; }
+
+/* ---------- code ---------- */
+pre.astro-code, .code-island {
+  background: var(--code-background) !important; color: var(--code-foreground);
+  border-radius: 10px; padding: 16px 20px; overflow-x: auto;
+  font-size: 14px; line-height: 1.65; margin: 24px 0;
+}
+pre.astro-code code { font-family: var(--code); }
+.code-wrap { position: relative; }
+.copy-code {
+  position: absolute; top: 8px; right: 8px; opacity: 0; transition: opacity .15s;
+  background: var(--page); color: var(--ink-2); border: 0; border-radius: 6px;
+  font: 500 12.5px var(--sans); padding: 5px 10px; cursor: pointer;
+}
+.copy-code:hover { color: var(--ink); }
+.code-wrap:hover .copy-code, .copy-code:focus-visible { opacity: 1; }
+@media (hover: none) { .copy-code { opacity: 1; } }
+
+/* ---------- prose, from the docs site ---------- */
+.prose { max-width: var(--measure); font-size: 17px; line-height: 1.6; }
+.prose > :first-child { margin-top: 0; }
+.prose p { margin: 0 0 16px; }
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 { color: var(--ink); text-wrap: balance; }
+.prose h1 { font-size: clamp(36px, 3.3vw, 46px); line-height: 1.04; letter-spacing: -0.012em; font-weight: 500; font-variation-settings: 'opsz' 144; margin: 0 0 18px; }
+.prose h1 + p { font-size: 19px; line-height: 1.5; color: var(--ink-2); max-width: 60ch; margin-bottom: 28px; }
+.prose h2 { font-size: 28px; line-height: 1.15; letter-spacing: -0.015em; font-weight: 500; font-variation-settings: 'opsz' 144; margin: 64px 0 14px; }
+.prose h3 { font-size: 21px; line-height: 1.25; letter-spacing: -0.01em; font-weight: 500; margin: 44px 0 10px; }
+.prose h4 { font-size: 17.5px; line-height: 1.35; font-weight: 550; margin: 32px 0 8px; }
+.prose h5, .prose h6 { font-size: 16px; line-height: 1.4; font-weight: 620; color: var(--ink-2); margin: 28px 0 6px; }
+.prose :is(h2, h3, h4) + :is(h3, h4, h5) { margin-top: 20px; }
+.prose p, .prose li { color: var(--ink); }
+.prose strong { font-weight: 600; }
+.prose a { color: var(--blue-ink); text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent); text-underline-offset: 3px; }
+.prose a:hover { text-decoration-color: currentColor; }
+.prose :not(pre) > code { font-size: 0.875em; color: var(--ink); background: var(--surface); padding: 0.1em 0.36em; border-radius: 4px; }
+.prose a code { color: inherit; }
+.prose ul, .prose ol { padding-left: 1.4em; margin: 0 0 16px; }
+.prose li + li { margin-top: 6px; }
+.prose li > p { margin-bottom: 8px; }
+.prose li::marker { color: var(--ink-3); }
+.prose img { border-radius: 10px; }
+.prose hr { border: 0; border-top: 1px solid var(--rule); margin: 48px 0; }
+.prose blockquote { margin: 24px 0; padding: 0 0 0 20px; border-left: 2px solid var(--rule); color: var(--ink-2); }
+
+/* tables: hairline rows, no zebra, no box */
+.prose table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.5; margin: 24px 0 28px; display: block; overflow-x: auto; }
+.prose th { text-align: left; font-weight: 600; font-size: 14px; color: var(--ink); border-bottom: 1px solid var(--ink-3); padding: 0 20px 10px 0; vertical-align: bottom; }
+.prose td { border-bottom: 1px solid var(--rule); padding: 11px 20px 11px 0; vertical-align: top; }
+.prose :is(th, td):last-child { padding-right: 0; }
+.prose td :not(pre) > code { font-size: 0.86em; }
+/* cells break at spaces and hyphens, never mid-word; a wide table scrolls inside itself */
+.prose td a, .prose td :not(pre) > code { overflow-wrap: normal; }
+
+/* a file name is the code block's own top strip */
+.prose .code-title { margin: 24px 0 0; padding: 9px 20px 8px; font: 12.5px/1.4 var(--code); color: var(--ink-2); background: var(--code-background); border-radius: 10px 10px 0 0; border-bottom: 1px solid color-mix(in srgb, var(--rule) 70%, var(--code-background)); }
+.prose .code-title + pre.astro-code, .prose .code-title + .code-wrap > pre.astro-code { margin-top: 0; border-radius: 0 0 10px 10px; }
+.prose :is(th, td):first-child code { background: none; padding: 0; font-weight: 500; }
+.prose { overflow-wrap: break-word; }
+.prose a { overflow-wrap: anywhere; }
+.prose :not(pre) > code { white-space: nowrap; }
+.prose :is(td, th, h1, h2, h3, h4, h5, h6) code, .prose code.code-long { white-space: normal; }
+@media (max-width: 560px) { .prose code:is(.code-mid, .code-long) { white-space: normal; overflow-wrap: anywhere; } }
+.prose pre.astro-code:not(:has(span[style])):not(:has(.line + .line)) { white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (hover: none) { .prose pre.astro-code:not(:has(span[style])):not(:has(.line + .line)) { padding-right: 72px; } }
+.prose :is(h1, h2, h3, h4, h5, h6) code { font-size: 0.84em; font-weight: 450; letter-spacing: -0.03em; color: inherit; background: none; padding: 0; border-radius: 0; overflow-wrap: break-word; }
+.prose :is(h4, h5, h6) code { font-size: 0.92em; }
+.prose img { display: block; margin: 24px 0; }
+/* Diagrams sit on white, so in dark mode they get a surface frame instead of being inverted. */
+[data-theme='dark'] .prose img { background: var(--surface); padding: 12px; }
