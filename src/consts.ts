@@ -6,4 +6,4 @@ export const GOATCOUNTER_CODE = 'eliasecchi'; // the "MYCODE" in https://MYCODE.
 export const SEARCH_CONSOLE_TOKEN = ''; // the content="..." value of Search Console's HTML tag
 
 // Empty value = don't render that link.
-export const SOCIAL = { github: 'https://github.com/eliasecchig', linkedin: '', x: 'https://x.com/secchi_elia' };
+export const SOCIAL = { github: 'https://github.com/eliasecchig', linkedin: '', x: 'https://x.com/secchi_elia', devto: 'https://dev.to/eliasecchi' };
