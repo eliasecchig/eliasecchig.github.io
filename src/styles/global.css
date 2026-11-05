@@ -202,3 +202,17 @@ pre.astro-code code { font-family: var(--code); }
 .prose img { display: block; margin: 24px 0; }
 /* Diagrams sit on white, so in dark mode they get a surface frame instead of being inverted. */
 [data-theme='dark'] .prose img { background: var(--surface); padding: 12px; }
+
+/* ---------- footer social row and about profile ---------- */
+.footer-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+.profile { display: flex; align-items: center; gap: 24px; margin-bottom: 36px; }
+.profile img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; flex: none; border: 1px solid var(--rule); }
+.prose .profile h1 { margin: 0 0 6px; }
+.profile .role { margin: 0 0 12px; font-size: 16px; line-height: 1.4; color: var(--ink-3); }
+.prose .profile .role { color: var(--ink-3); }
+.prose dl.tech { margin: 0; }
+.prose dl.tech > div { margin: 0 0 8px; }
+.prose dl.tech dt { display: inline; font-weight: 600; }
+.prose dl.tech dt::after { content: ':'; }
+.prose dl.tech dd { display: inline; margin: 0 0 0 0.35em; }
+@media (max-width: 559px) { .profile { flex-direction: column; align-items: flex-start; gap: 16px; } }

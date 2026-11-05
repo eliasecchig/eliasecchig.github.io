@@ -1,10 +1,13 @@
 ---
+import SocialLinks from './SocialLinks.astro';
+
 const today = new Date();
 ---
 
 <footer class="site-footer">
-	<div class="wrap">
+	<div class="wrap footer-row">
 		&copy; {today.getFullYear()} Elia Secchi. Views are my own. <a href="/rss.xml">RSS</a>
+		<SocialLinks />
 	</div>
 </footer>
 <script>

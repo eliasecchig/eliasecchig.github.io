@@ -1,16 +1,55 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
+import { Image } from 'astro:assets';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import avatar from '../assets/avatar.png';
+
+const description = 'Elia Secchi writes about building and shipping AI agents on Google Cloud.';
 ---
 
-<Layout
-	title="About"
-	description="Who writes this blog, and what it covers."
-	date={new Date('2026-11-05')}
->
-	<p>I'm Elia Secchi. I work at Google, and the views on this site are my own.</p>
-	<p>
-		I write short posts about the Agents CLI and about building and running agents on Google Cloud.
-		Each post shows a command you can run and what it prints.
-	</p>
-	<p>You can find me on <a href="https://github.com/eliasecchig">GitHub</a>.</p>
-</Layout>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title="About" description={description} />
+	</head>
+
+	<body>
+		<Header />
+		<main id="main" class="wrap page">
+			<article class="prose">
+				<div class="profile">
+					<Image src={avatar} alt="Elia Secchi" width={96} height={96} />
+					<div>
+						<h1>Elia Secchi</h1>
+						<p class="role">Milan, Italy &middot; Staff DevRel Engineer, Google Cloud &middot; AI agents, Gemini platform</p>
+						<SocialLinks />
+					</div>
+				</div>
+				<p>
+					Hello, I'm Elia. I'm a Staff DevRel Engineer at Google Cloud, where I work on <a href="https://github.com/google/agents-cli">Agents CLI</a>, the entry point to Gemini platform for developers and their coding agents. The views on this site are my own.
+				</p>
+				<p>
+					Agents CLI gives Antigravity, Claude Code, Codex or any other coding agent the skills and commands to scaffold, evaluate, deploy and observe agents on Google Cloud, so you can take an agent to production without learning every service and CLI yourself.
+				</p>
+				<p>
+					We launched Agents CLI at Google Cloud Next '26. Since April 2026 the <a href="https://github.com/google/agents-cli">repository</a> has passed 6,300 GitHub stars, and the <a href="https://pypi.org/project/google-agents-cli/">package</a> was downloaded over 360,000 times in the last month.
+				</p>
+				<p>
+					Before Agents CLI, I created Agent Starter Pack, which grew into Agents CLI. I write about this work on the <a href="https://developers.googleblog.com/search/?author=Elia+Secchi">Google Developers Blog</a>, run workshops and hackathons, and was a guest on Google's <a href="https://www.kaggle.com/learn-guide/5-day-agents">5-Day AI Agents Intensive</a> on Kaggle.
+				</p>
+				<p>
+					Before Google, I was an ML engineer at Virgin Media O2 and Datatonic, where I built ML systems from scratch and ran them in production.
+				</p>
+				<h2>Technologies</h2>
+				<dl class="tech">
+					<div><dt>Agents</dt><dd>ADK, Agents CLI, Gemini, LangChain, Harbor</dd></div>
+					<div><dt>Google Cloud</dt><dd>Agent Platform, Agent Substrate, Cloud Run, GKE, BigQuery, Cloud Trace</dd></div>
+					<div><dt>Delivery</dt><dd>Python, Terraform, GitHub Actions, Docker</dd></div>
+				</dl>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
