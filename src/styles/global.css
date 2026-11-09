@@ -202,6 +202,11 @@ pre.astro-code code { font-family: var(--code); }
 .prose img { display: block; margin: 24px 0; }
 /* Diagrams sit on white, so in dark mode they get a surface frame instead of being inverted. */
 [data-theme='dark'] .prose img { background: var(--surface); padding: 12px; }
+/* A figure is a paragraph holding only an image; the paragraph right after it is its caption. */
+.prose p:has(> img:only-child) { margin: 36px 0 0; }
+.prose p:has(> img:only-child) img { margin: 0 auto; border: 1px solid var(--rule); }
+.prose p:has(> img:only-child) + p { margin: 12px auto 36px; max-width: 60ch; font-size: 14px; line-height: 1.5; color: var(--ink-3); text-align: center; }
+.prose p:has(> img:only-child) + p code { font-size: 0.9em; }
 
 /* ---------- footer social row and about profile ---------- */
 .footer-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
@@ -216,3 +221,33 @@ pre.astro-code code { font-family: var(--code); }
 .prose dl.tech dt::after { content: ':'; }
 .prose dl.tech dd { display: inline; margin: 0 0 0 0.35em; }
 @media (max-width: 559px) { .profile { flex-direction: column; align-items: flex-start; gap: 16px; } }
+
+/* ---------- terminal blocks (```console): a dark window in both themes ---------- */
+.code-wrap:has(> pre.terminal) {
+  --t-bg: #16181c; --t-bar: #1f2228; --t-ink: #e6e8eb; --t-out: #a9b0b8; --t-dim: #6b737c;
+  --t-prompt: #8ab4f8; --t-hl: rgba(129, 201, 149, 0.12); --t-hl-bar: #81c995;
+  margin: 28px 0; border-radius: 12px; overflow: hidden; background: var(--t-bg);
+  border: 1px solid color-mix(in srgb, var(--rule) 60%, transparent);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+.term-bar { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--t-bar); border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.term-dots { display: flex; gap: 6px; }
+.term-dots i { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
+.term-dots i:nth-child(2) { background: #febc2e; }
+.term-dots i:nth-child(3) { background: #28c840; }
+.term-title { font: 12.5px/1 var(--code); color: var(--t-out); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 64px; }
+.prose pre.astro-code.terminal {
+  margin: 0; border-radius: 0; background: var(--t-bg) !important; color: var(--t-ink);
+  padding: 14px 0 16px; font-size: 13.5px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: break-word; overflow-x: hidden;
+}
+pre.terminal code { white-space: normal; }
+pre.terminal .line { display: block; white-space: pre-wrap; padding: 0 20px 0 calc(20px + 2ch); text-indent: -2ch; min-height: 1.6em; }
+pre.terminal .line.t-cmd { color: var(--t-ink); }
+pre.terminal .line.t-cmd + .line.t-out { margin-top: 2px; }
+pre.terminal .line.t-out { color: var(--t-out); }
+pre.terminal .line.t-elide { color: var(--t-dim); }
+pre.terminal .t-prompt { color: var(--t-prompt); user-select: none; }
+pre.terminal .line.t-hl { background: var(--t-hl); box-shadow: inset 3px 0 0 var(--t-hl-bar); color: var(--t-ink); }
+pre.terminal .line.t-pending { visibility: hidden; }
+.code-wrap:has(> pre.terminal) .copy-code { top: 6px; right: 8px; background: rgba(255, 255, 255, 0.08); color: var(--t-out); }
+.code-wrap:has(> pre.terminal) .copy-code:hover { color: var(--t-ink); }

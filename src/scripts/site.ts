@@ -38,7 +38,16 @@ document.querySelectorAll<HTMLElement>('.prose pre.astro-code').forEach((pre) =>
 	wrap.className = 'code-wrap';
 	pre.replaceWith(wrap);
 	const title = pre.dataset.title;
-	if (title) {
+	if (pre.classList.contains('terminal')) {
+		const bar = document.createElement('div');
+		bar.className = 'term-bar';
+		bar.innerHTML = '<span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>';
+		const label = document.createElement('span');
+		label.className = 'term-title';
+		label.textContent = title ?? 'Terminal';
+		bar.append(label);
+		wrap.prepend(bar);
+	} else if (title) {
 		const bar = document.createElement('div');
 		bar.className = 'code-title';
 		bar.textContent = title;
@@ -50,9 +59,52 @@ document.querySelectorAll<HTMLElement>('.prose pre.astro-code').forEach((pre) =>
 	button.type = 'button';
 	button.textContent = 'Copy';
 	button.addEventListener('click', async () => {
-		await navigator.clipboard.writeText(pre.innerText.trimEnd());
+		await navigator.clipboard.writeText(pre.classList.contains('terminal') ? terminalCommands(pre) : pre.innerText.trimEnd());
 		button.textContent = 'Copied';
 		setTimeout(() => (button.textContent = 'Copy'), 1500);
 	});
 	wrap.append(button);
+	if (pre.classList.contains('terminal')) animateTerminal(pre);
 });
+
+// Copy only the commands of a terminal block, without the "$ " prompt or the output.
+function terminalCommands(pre: HTMLElement): string {
+	return [...pre.querySelectorAll<HTMLElement>('.line.t-cmd .t-text')]
+		.map((el) => el.dataset.full ?? el.textContent ?? '')
+		.join('\n')
+		.trim();
+}
+
+// Type each command, then show its output, the first time the block scrolls into view.
+function animateTerminal(pre: HTMLElement) {
+	if (pre.hasAttribute('data-static') || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+	const lines = [...pre.querySelectorAll<HTMLElement>('.line')];
+	lines.forEach((line) => {
+		const text = line.querySelector<HTMLElement>('.t-text');
+		if (text) text.dataset.full = text.textContent ?? '';
+		line.classList.add('t-pending');
+	});
+	const observer = new IntersectionObserver(async ([entry]) => {
+		if (!entry.isIntersecting) return;
+		observer.disconnect();
+		pre.classList.add('t-playing');
+		for (const line of lines) {
+			const text = line.querySelector<HTMLElement>('.t-text');
+			line.classList.remove('t-pending');
+			if (line.classList.contains('t-cmd') && text) {
+				const full = text.dataset.full ?? '';
+				const step = Math.max(1, Math.ceil(full.length / 45));
+				for (let i = 0; i <= full.length; i += step) {
+					text.textContent = full.slice(0, i);
+					await new Promise((r) => setTimeout(r, 18));
+				}
+				text.textContent = full;
+				await new Promise((r) => setTimeout(r, 220));
+			} else {
+				await new Promise((r) => setTimeout(r, 45));
+			}
+		}
+		pre.classList.remove('t-playing');
+	}, { threshold: 0.4 });
+	observer.observe(pre);
+}
