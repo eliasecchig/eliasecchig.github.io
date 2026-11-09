@@ -1,7 +1,7 @@
 ---
 title: Find the production agent failures that every health check misses
 description: AQuA is an open-source quality agent that surfaces the production failures your health checks miss and, when you ask, traces a failure to the line of code behind it. Try its dashboard locally.
-date: 2026-11-10
+date: 2026-11-05
 tags: [agents-cli, adk, observability, evaluation]
 sources:
   - https://developers.googleblog.com/the-outer-loop-insights-first-an-ambient-quality-agent-that-diagnoses-your-production-agent/
