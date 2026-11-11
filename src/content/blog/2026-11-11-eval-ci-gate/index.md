@@ -15,7 +15,7 @@ hero_alt: "A change that scores 5.00 passes the Pre-merge eval gate on its way t
 
 Unit tests check that an agent's code runs, so a one-line change to its instruction can make its answers worse while the tests keep passing.
 
-Last year we covered this in the Kaggle AI Agents Intensive with Google, in [Prototype to Production](https://www.kaggle.com/whitepaper-prototype-to-production), the Day 5 whitepaper, which says no agent version should reach users until it passes an automated evaluation. [Agents CLI](https://github.com/google/agents-cli), the command-line tool for building, evaluating, and deploying agents on Google Cloud, turns the pre-merge part of that rule into one setting in v1.13.0. In this post I add it to a fresh project and then to the project's CI, the continuous integration checks that run on every pull request.
+Last year we covered this in the Kaggle AI Agents Intensive with Google, in [Prototype to Production](https://www.kaggle.com/whitepaper-prototype-to-production), the Day 5 whitepaper. It says no agent version should reach users until it passes an automated evaluation, and [Agents CLI](https://github.com/google/agents-cli), the command-line tool for building, evaluating, and deploying agents on Google Cloud, turns the pre-merge part of that rule into one setting in v1.13.0. In this post I add it to a fresh project and then to the project's CI, the continuous integration checks that run on every pull request.
 
 ![A pull request goes into agents-cli eval run with a threshold of 4 out of 5; PASS exits 0 and merges, FAIL exits 1 and blocks.](./images/gate.png)
 
@@ -100,7 +100,7 @@ $ echo $?
 1
 ```
 
-The full `Failures:` line lists case 0 and case 1, the greeting and the weather question, both at 2.00. The judge gave both a 2, because "Anything" was a vague answer to the greeting and "Foggy" skipped the weather tool. "Paris" still matched the reference and kept its 5, which is why `pass_rate` is 0.3333. The `Next:` line points to the HTML report with each case's reply and score, and suggests `agents-cli eval compare` to diff two runs, so the person whose build failed knows where to look.
+The full `Failures:` line lists case 0 and case 1, the greeting and the weather question, both at 2.00. The judge gave both a 2, because "Anything" was a vague answer to the greeting and "Foggy" skipped the weather tool. "Paris" still matched the reference and kept its 5, which is why `pass_rate` is 0.3333. The `Next:` line points to the HTML report with each case's reply and score. It also suggests `agents-cli eval compare` to diff two runs, so the person whose build failed knows where to look.
 
 ## Put it in CI
 
@@ -123,7 +123,8 @@ $ echo $?
 
 ### Add the gate to GitHub Actions
 
-Run `agents-cli scaffold enhance --cicd-runner github_actions` in the project to add CI. The generated `.github/workflows/pr_checks.yaml` already authenticates to Google Cloud and runs your unit and integration tests on pull requests to `main` that touch `app/`, `tests/`, `deployment/` or `uv.lock`. Add the gate as one more step after the integration tests. Your `.env` stays out of the repo, so the step sets the same three variables itself, which tell the Gemini client to use your Google Cloud project in the global region. `CICD_PROJECT_ID` is a repository variable you set in GitHub to the project CI runs in:
+Run `agents-cli scaffold enhance --cicd-runner github_actions` in the project to add CI. The generated `.github/workflows/pr_checks.yaml` already authenticates to Google Cloud and runs your unit and integration tests on pull requests to `main` that touch `app/`, `tests/`, `deployment/` or `uv.lock`. Add the gate as one more step after the integration tests. Your `.env` stays out of the repo, so the step sets the same three variables itself, which tell the Gemini client to use your Google Cloud project in the global region.
+`CICD_PROJECT_ID` is a repository variable you set in GitHub to the project CI runs in:
 
 ```yaml
       - name: Eval gate
