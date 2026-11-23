@@ -1,6 +1,6 @@
 ---
 title: Why millions of agents don't need millions of VMs on Agent Substrate
-description: Build up from one VM per agent to a thousand agents and then millions on Agent Substrate 1.0, and see step by step how an agent runs there.
+description: How stateful agent harnesses run, suspend, and wake in under a second on Agent Substrate 1.0, from one VM to millions of actors.
 date: 2026-11-23
 tags: [agent-substrate, gke, harness, agents]
 sources:
